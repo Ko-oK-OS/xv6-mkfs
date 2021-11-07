@@ -86,7 +86,6 @@ main(int argc, char *argv[])
   assert((BSIZE % sizeof(struct dirent)) == 0);
 
   fsfd = open(argv[1], O_RDWR|O_CREAT|O_TRUNC, 0666);
-  printf("file: %s\n", argv[1]);
   if(fsfd < 0)
     die(argv[1]);
 
@@ -131,9 +130,8 @@ main(int argc, char *argv[])
   for(i = 2; i < argc; i++){
     // get rid of "user/"
     char *shortname;
-    printf("file: %s\n", argv[i]);
-    if(strncmp(argv[i], "../bin/", 7) == 0)
-      shortname = argv[i] + 7;
+    if(strncmp(argv[i], "xv6-user/", 9) == 0)
+      shortname = argv[i] + 9;
     else
       shortname = argv[i];
     
@@ -266,7 +264,6 @@ iappend(uint inum, void *xp, int n)
   // printf("append inum %d at off %d sz %d\n", inum, off, n);
   while(n > 0){
     fbn = off / BSIZE;
-    printf("fbn: %d\n", fbn);
     assert(fbn < MAXFILE);
     if(fbn < NDIRECT){
       if(xint(din.addrs[fbn]) == 0){
